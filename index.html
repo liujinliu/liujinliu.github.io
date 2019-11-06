@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="如栈">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如栈">
+  <link rel="canonical" href="http://yoursite.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: true,
+    isPost: false,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如栈</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">如栈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/16/shell常用命令记录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2019/09/16/shell常用命令记录/" class="post-title-link" itemprop="url">shell常用命令记录</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-16 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-16T00:00:00+08:00">2019-09-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/运维/" itemprop="url" rel="index"><span itemprop="name">运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="shell命令杀死进程和所有子进程"><a href="#shell命令杀死进程和所有子进程" class="headerlink" title="shell命令杀死进程和所有子进程"></a>shell命令杀死进程和所有子进程</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pstree pid -p| awk -F&quot;[()]&quot; &apos;&#123;print $2&#125;&apos;| xargs kill -9</span><br></pre></td></tr></table></figure>
+
+<h4 id="shell获取上一条启动命令的进程号"><a href="#shell获取上一条启动命令的进程号" class="headerlink" title="shell获取上一条启动命令的进程号"></a>shell获取上一条启动命令的进程号</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nohup &#123;some command&#125; &amp;</span><br><span class="line">echo $!</span><br></pre></td></tr></table></figure>
+
+<h4 id="shell获取当前运行脚本所在路径"><a href="#shell获取当前运行脚本所在路径" class="headerlink" title="shell获取当前运行脚本所在路径"></a>shell获取当前运行脚本所在路径</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cur_dir=$(cd &quot;$(dirname &quot;$0&quot;)&quot;; pwd)</span><br></pre></td></tr></table></figure>
+
+<h4 id="windows换行符换成linux换行符"><a href="#windows换行符换成linux换行符" class="headerlink" title="windows换行符换成linux换行符"></a>windows换行符换成linux换行符</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dos2unix &#123;filename&#125;</span><br><span class="line">sed -i &apos;s/\r//g&apos; &#123;filename&#125;</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/23/mysql插入太多数据导致MySQL-server-has-gone-away/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/04/23/mysql插入太多数据导致MySQL-server-has-gone-away/" class="post-title-link" itemprop="url">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-04-23 00:00:00" itemprop="dateCreated datePublished" datetime="2018-04-23T00:00:00+08:00">2018-04-23</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在一次开发过程中，将数据写入mysql时候总是报</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MySQL server has gone away</span><br></pre></td></tr></table></figure>
+
+<p>的错误，因为mysql就是本地启动的，而且从插入到报错整个过程时间很短，因此不可能是连接方面的timeout一类的问题。最后通过网上搜索，看到了遇到类似问题的<a href="http://blog.csdn.net/fdipzone/article/details/51974165" target="_blank" rel="noopener">帖子</a>，参考作者的做法，问题得到了解决。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/04/23/mysql插入太多数据导致MySQL-server-has-gone-away/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/ubuntu安装jdk7-jdk8的两种方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/03/29/ubuntu安装jdk7-jdk8的两种方式/" class="post-title-link" itemprop="url">ubuntu安装jdk7-jdk8的两种方式</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-03-29 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-29T00:00:00+08:00">2018-03-29</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/运维/" itemprop="url" rel="index"><span itemprop="name">运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>原文地址：<a href="http://www.cnblogs.com/a2211009/p/4265225.html" target="_blank" rel="noopener">http://www.cnblogs.com/a2211009/p/4265225.html</a>  </p>
+<p>ubuntu安装jdk有两种方式</p>
+<ul>
+<li>通过ppa方式安装</li>
+<li>通过官网下载源码安装</li>
+</ul>
+<p>这里记录采用ppa方式安装的方法</p>
+<h3 id="1-添加ppa"><a href="#1-添加ppa" class="headerlink" title="1. 添加ppa"></a>1. 添加ppa</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-安装oracle-java-installer"><a href="#2-安装oracle-java-installer" class="headerlink" title="2. 安装oracle-java-installer"></a>2. 安装oracle-java-installer</h3><p>jdk7</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install oracle-java7-installer</span><br></pre></td></tr></table></figure>
+
+<p>jdk8</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install oracle-java8-installer</span><br></pre></td></tr></table></figure>
+
+<p>安装时候会询问是否同意oracle的服务条款，选择yes.<br>如果手懒不想自己动手点击，可以加入下面的命令，自动选择同意(这个是看到原文写了，本人没亲自试过)</p>
+<h5 id="jdk7默认同意条款"><a href="#jdk7默认同意条款" class="headerlink" title="jdk7默认同意条款"></a>jdk7默认同意条款</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections</span><br></pre></td></tr></table></figure>
+
+<h5 id="jdk8默认同意条款"><a href="#jdk8默认同意条款" class="headerlink" title="jdk8默认同意条款"></a>jdk8默认同意条款</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置系统默认jdk"><a href="#3-设置系统默认jdk" class="headerlink" title="3. 设置系统默认jdk"></a>3. 设置系统默认jdk</h3><h5 id="jdk7"><a href="#jdk7" class="headerlink" title="jdk7"></a>jdk7</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo update-java-alternatives -s java-7-oracle</span><br></pre></td></tr></table></figure>
+
+<h5 id="jdk8"><a href="#jdk8" class="headerlink" title="jdk8"></a>jdk8</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo update-java-alternatives -s java-8-oracle</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-测试jdk是否安装成功"><a href="#4-测试jdk是否安装成功" class="headerlink" title="4. 测试jdk是否安装成功"></a>4. 测试jdk是否安装成功</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -version</span><br><span class="line">javac -version</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/nginx配置vhost的例子/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/nginx配置vhost的例子/" class="post-title-link" itemprop="url">nginx配置vhost的例子</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/运维/" itemprop="url" rel="index"><span itemprop="name">运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>nginx下面几个配置vhost的例子<br>php</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">server_name stage.localhost;</span><br><span class="line">listen 80 ;</span><br><span class="line">        root /data;</span><br><span class="line">        index index.html index.htm index.php;</span><br><span class="line">location ~ .php$ &#123;</span><br><span class="line">        fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME  /data$fastcgi_script_name;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>静态文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">server_name sms.fake;</span><br><span class="line">listen 80 ;</span><br><span class="line">        root /data/fakesms;</span><br><span class="line">        index mobile1.html mobile1b.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他语言开发的server服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen   80;</span><br><span class="line">    server_name localhost.pythonserver;</span><br><span class="line"></span><br><span class="line">    access_log /var/log/nginx/pythonserver-access.log ;</span><br><span class="line">    error_log /var/log/nginx/pythonserver-error.log ;</span><br><span class="line">    charset utf-8;</span><br><span class="line">    client_max_body_size    100m;</span><br><span class="line">    client_body_timeout     60;      </span><br><span class="line">    location /exam0/ &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8889;</span><br><span class="line">    &#125;</span><br><span class="line">    location /exam1/ &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8880;</span><br><span class="line">    &#125;</span><br><span class="line">    location /exam2/ &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8881;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>带upstream的写法例子：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream rd_servers &#123;</span><br><span class="line">  server 127.0.0.1:5000;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server&#123;</span><br><span class="line">  server_tokens off;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name redash.xxxxx.com;</span><br><span class="line">  access_log /var/log/nginx/rd.access.log;</span><br><span class="line"></span><br><span class="line">  gzip on;</span><br><span class="line">  gzip_types *;</span><br><span class="line">  gzip_proxied any;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    proxy_set_header Host $http_host;</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header X-Forwarded-Proto $scheme;</span><br><span class="line">    proxy_pass       http://rd_servers;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的一点是，nginx默认的安装配置路径在/etc/nginx下面，在nginx.conf里面一般可以看到下面一行内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">include /etc/nginx/conf.d/*.conf;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>因此可以在conf.d下面灵活的增加自己的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">listen &#123;port&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种配置是可以在多个配置文件出现的，但要注意的是同一个port，那么不同的配置文件一定要有不同的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server_name</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/jq工具的简单使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/jq工具的简单使用/" class="post-title-link" itemprop="url">jq工具的简单使用</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具/" itemprop="url" rel="index"><span itemprop="name">工具</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近因为工作需要，同事给我一个json文件，整个文件3M，全在一行，我去，简直崩溃。<br>使用<a href="https://stedolan.github.io/jq/" target="_blank" rel="noopener">jq</a>工具很好的解决了这个问题。</p>
+<h3 id="1-安装jq"><a href="#1-安装jq" class="headerlink" title="1. 安装jq"></a>1. 安装jq</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install jq</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-在vim中的使用"><a href="#2-在vim中的使用" class="headerlink" title="2. 在vim中的使用"></a>2. 在vim中的使用</h3><p>最后一行模式下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:%!jq &apos;.&apos;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是这样操作原文件就直接被改变了，所以最好提前备份下。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/linux磁盘配额限制方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/linux磁盘配额限制方式/" class="post-title-link" itemprop="url">linux磁盘配额限制方式</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近研究docker的磁盘配额限制，貌似官方最新版本的docker已经支持，底层用的是linux的quota，于是自己对quota进行了简单的尝试，记录于此。本文将演示如何创建一个gquota的用户组，并对这个用户组下的用户进行磁盘配额限制。 </p>
+<h4 id="查看内核是否支持"><a href="#查看内核是否支持" class="headerlink" title="查看内核是否支持"></a>查看内核是否支持</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># grep CONFIG_QUOTA /boot/config-[version]</span><br><span class="line">CONFIG_QUOTA=y</span><br><span class="line">CONFIG_QUOTA_NETLINK_INTERFACE=y</span><br><span class="line"># CONFIG_QUOTA_DEBUG is not set</span><br><span class="line">CONFIG_QUOTA_TREE=y</span><br><span class="line">CONFIG_QUOTACTL=y</span><br></pre></td></tr></table></figure>
+
+<p>CONFIG_QUOTA和CONFIG_QUOTACTL两个y，恭喜，你的内核支持quota，否则就要升级或是重新编译内核了，貌似2.4以上的版本内核都支持</p>
+<h4 id="修改内核fstab，对根目录开启磁盘配额限制"><a href="#修改内核fstab，对根目录开启磁盘配额限制" class="headerlink" title="修改内核fstab，对根目录开启磁盘配额限制"></a>修改内核fstab，对根目录开启磁盘配额限制</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># vim /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027115636528" alt="这里写图片描述"><br>标出来的地方就是需要新增的地方，这个表示是对根目录进行磁盘配额限制，当然，也可以加在其他行，则是对其他的目录进行磁盘配额限制。</p>
+<h4 id="查看目录挂载位置"><a href="#查看目录挂载位置" class="headerlink" title="查看目录挂载位置"></a>查看目录挂载位置</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/sda3        16G   11G  4.4G  71% /</span><br><span class="line">tmpfs           938M   72K  938M   1% /dev/shm</span><br><span class="line">/dev/sda1       190M   32M  148M  18% /boot</span><br></pre></td></tr></table></figure>
+
+<h4 id="重新挂载根目录分区，内核重新读取-etc-fstab文件"><a href="#重新挂载根目录分区，内核重新读取-etc-fstab文件" class="headerlink" title="重新挂载根目录分区，内核重新读取/etc/fstab文件"></a>重新挂载根目录分区，内核重新读取/etc/fstab文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mount -o remount /</span><br><span class="line"># mount | grep quota</span><br><span class="line">/dev/sda3 on / type ext4 (rw,usrquota,grpquota)</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过quotacheck命令在根目录下生成quota配置文件"><a href="#通过quotacheck命令在根目录下生成quota配置文件" class="headerlink" title="通过quotacheck命令在根目录下生成quota配置文件"></a>通过quotacheck命令在根目录下生成quota配置文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># quotacheck -cugm /dev/sda3</span><br><span class="line"># ll / | grep quota</span><br><span class="line">-rw-------.   1 root root   8192 Oct 27 12:01 aquota.group</span><br><span class="line">-rw-------.   1 root root   7168 Oct 27 11:43 aquota.user</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动磁盘配额"><a href="#启动磁盘配额" class="headerlink" title="启动磁盘配额"></a>启动磁盘配额</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># quotaon /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建一个用户组gquota，用来测试"><a href="#创建一个用户组gquota，用来测试" class="headerlink" title="创建一个用户组gquota，用来测试"></a>创建一个用户组gquota，用来测试</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># groupadd gquota</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置对用户组gquota的磁盘配额限制"><a href="#配置对用户组gquota的磁盘配额限制" class="headerlink" title="配置对用户组gquota的磁盘配额限制"></a>配置对用户组gquota的磁盘配额限制</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># edquota -g gquota</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027120951128" alt="这里写图片描述"><br>设置用户组gquota的软限制为480M，硬限制为500M（用户超过软限制会得到报警，超不过硬限制）</p>
+<h4 id="新建用户并加入gquota用户组"><a href="#新建用户并加入gquota用户组" class="headerlink" title="新建用户并加入gquota用户组"></a>新建用户并加入gquota用户组</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># useradd -m temp</span><br><span class="line"># passwd temp</span><br><span class="line"># usermod -g gquota temp</span><br><span class="line"># su - temp</span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟大文件写入"><a href="#模拟大文件写入" class="headerlink" title="模拟大文件写入"></a>模拟大文件写入</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file1 bs=1M count=450</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134117449" alt="这里写图片描述"><br>大小没有超过软限制，没有告警<br>再次写入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file3 bs=1M count=40</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134601486" alt="这里写图片描述"><br>此时已经出现告警<br>再次写入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file3 bs=1M count=40</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134956569" alt="这里写图片描述"><br>显示写入失败</p>
+<h4 id="查看磁盘分配使用情况"><a href="#查看磁盘分配使用情况" class="headerlink" title="查看磁盘分配使用情况"></a>查看磁盘分配使用情况</h4><p><img src="http://ljlimg.aimag.top/blog/images/20161027135032847" alt="这里写图片描述"></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>需要说明的一点是，对组的限制指的是这个组下面的所有用户加起来使用的磁盘总额，假设有个temp2用户也加入了gquota这个组，那么如果temp用户已经写入了400M，那么留给temp2用户的软限制则只剩80M，磁盘配额限制是可以针对单个用户的，即执行下面的命令，依然以新建一个temp用户为例，temp用户不用加入gquota组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[root@centos66-3 ~]# useradd -m temp</span><br><span class="line">[root@centos66-3 ~]# passwd temp</span><br><span class="line">[root@centos66-3 ~]# edquota -u temp</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027140343586" alt="这里写图片描述"><br>配置temp用户的磁盘配额软限制和硬限制依然可以采用上面的方式进行写入测试。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/mysql打开general_log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/mysql打开general_log/" class="post-title-link" itemprop="url">mysql打开general_log</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在接收同时开发完的代码进行调试时候，一个事务执行过程没有报错，但是结果就是无法往数据库插入数据，最后打开general_log才发现是因为在代码执行过程，每次调用sdk接口进行sql执行时候都是重新连数据库，所以最后的commit相当于没有任何提交<br>方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#&gt;: mysql  -uroot -p&#123;passwd&#125; -P3306</span><br><span class="line"># 查看当前general_log是否打开(OFF表明是关闭的)</span><br><span class="line">mysql&gt; show variables LIKE &apos;%general%&apos;;</span><br><span class="line">+------------------+-----------------------------------------------+</span><br><span class="line">| Variable_name    | Value                                         |</span><br><span class="line">+------------------+-----------------------------------------------+</span><br><span class="line">| general_log      | OFF                                           |</span><br><span class="line">| general_log_file | /srv/rds_cluster/mysql/xxxxxxxx.log |</span><br><span class="line">+------------------+-----------------------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 打开general_log</span><br><span class="line">mysql&gt; set global general_log=ON;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; quit</span><br><span class="line">Bye</span><br></pre></td></tr></table></figure>
+
+<p>可以执行一些语句然后再查看下general_log</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * from user1;</span><br><span class="line">mysql&gt; quit</span><br><span class="line">Bye</span><br><span class="line"># 查看general_log</span><br><span class="line">-bash-4.1# cat /srv/rds_cluster/mysql/xxxxxxxx.log </span><br><span class="line">/opt/letv/mcluster/root/usr/libexec/mysqld, Version: 5.5.34-log (MySQL Galera Cluster (GPL), wsrep_23.7.6.rXXXX). started with:</span><br><span class="line">Tcp port: 3306  Unix socket: /var/lib/mysql/mysql.sock</span><br><span class="line">Time                 Id Command    Argument</span><br><span class="line">161117 11:12:04   944 Quit</span><br><span class="line">161117 11:12:11   945 Connect   root@localhost on </span><br><span class="line">                  945 Query     select @@version_comment limit 1</span><br><span class="line">161117 11:12:20   945 Query     SELECT DATABASE()</span><br><span class="line">                  945 Init DB   linzhanbo</span><br><span class="line">                  945 Query     show databases</span><br><span class="line">                  945 Query     show tables</span><br><span class="line">                  945 Field List        ___user1_old </span><br><span class="line">                  945 Field List        __user1_old </span><br><span class="line">                  945 Field List        _user1_old </span><br><span class="line">                  945 Field List        user1 </span><br><span class="line">                  945 Field List        userinfo </span><br><span class="line">161117 11:12:25   945 Query     show tables</span><br><span class="line">161117 11:12:33   945 Query     select * from user1</span><br><span class="line">161117 11:12:37   945 Quit</span><br></pre></td></tr></table></figure>
+
+<p>下面就是我打开general_log之后定位问题发现的日志，可以看出来，每次执行sql都重新连接了mysql，这样事务最终没有执行成功也就比较好定位了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">161117 11:22:15   947 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  947 Query     SET NAMES utf8</span><br><span class="line">                  947 Query     set autocommit=0</span><br><span class="line">                  947 Query     insert into user1(ID,age) values(0,23)</span><br><span class="line">                  948 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  948 Query     SET NAMES utf8</span><br><span class="line">                  948 Query     set autocommit=0</span><br><span class="line">                  947 Quit</span><br><span class="line">                  949 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  949 Query     SET NAMES utf8</span><br><span class="line">                  949 Query     set autocommit=0</span><br><span class="line">                  948 Quit</span><br><span class="line">                  949 Quit</span><br><span class="line">                  950 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  950 Query     SET NAMES utf8</span><br><span class="line">                  950 Query     set autocommit=0</span><br><span class="line">                  950 Query     insert into user1(ID,age) values(1,24)</span><br><span class="line">                  951 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  951 Query     SET NAMES utf8</span><br><span class="line">                  951 Query     set autocommit=0</span><br><span class="line">                  950 Quit</span><br><span class="line">                  952 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  952 Query     SET NAMES utf8</span><br><span class="line">                  952 Query     set autocommit=0</span><br><span class="line">                  951 Quit</span><br><span class="line">                  952 Quit</span><br><span class="line">                  953 Connect   root@127.0.0.1 on xxxxxx</span><br><span class="line">                  953 Query     SET NAMES utf8</span><br><span class="line">                  953 Query     set autocommit=0</span><br><span class="line">                  953 Query     commit</span><br><span class="line">                  953 Quit</span><br></pre></td></tr></table></figure>
+
+<p>另外需要说明一点的是create表和drop表的操作是不需要commit的。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/elasticsearch调优/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/elasticsearch调优/" class="post-title-link" itemprop="url">elasticsearch调优</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这部分是从同事的wiki上扒下来的，记在这里，作为以后使用的参考</p>
+<h3 id="分片和副本调优"><a href="#分片和副本调优" class="headerlink" title="分片和副本调优"></a>分片和副本调优</h3><ol>
+<li>更多分片使索引能传送到更多的服务器，意味着可以处理更多的文件，而不会降低性能  </li>
+<li>更多分片意味着获取特定文档所需的资源量会减少，因为相较于部署更少分片时，存储在单个分片中的文件数量会更少  </li>
+<li>更多分片意味着搜索索引时会面临更多问题，因为必须从更多分片中合并结果，使得查询的聚合阶段需要更多的资源</li>
+<li>更多副本会增强集群系统的容错性，因为当原始分片不可用时，其副本将代替原始分片发挥作用，只拥有单个副本，集群可能在不丢失数据的情况下遗失分片。当拥有两个副本时，即时丢失了原始分片及其中一个副本，一切工作仍可以很好地继续下去。</li>
+<li>更多副本意味着查询吞吐量会增加，因为执行车讯可以使用分片或分片的任一副本</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>副本多：</p>
+<ol>
+<li>优点：查询速度快，容错性高</li>
+<li>缺点：插入速度变慢</li>
+</ol>
+<p>分片多：</p>
+<ol>
+<li>优点：插入速度快</li>
+<li>缺点：查询速度慢</li>
+</ol>
+<p>副本最好设置为2份提高容错性和查询速度，分片设置为节点数量的2倍提高插入速度，如果是大批量导入不做查询的话可取消副本</p>
+<h3 id="Merge-吞吐量调优"><a href="#Merge-吞吐量调优" class="headerlink" title="Merge 吞吐量调优"></a>Merge 吞吐量调优</h3><p>系统默认是20mb，实际系统性能可能会更好，可适当调整 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl  -XPUT &quot;http://&lt;ip&gt;:9200/_cluster/settings&quot; -d</span><br><span class="line">&apos;&#123;</span><br><span class="line">    &quot;persistent&quot;:</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;indices.store.throttle.type&quot;: &quot;merge&quot;,</span><br><span class="line">        &quot;indices.store.throttle.max_bytes_per_sec&quot;: &quot;200mb&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
+
+<h3 id="刷新频率调优"><a href="#刷新频率调优" class="headerlink" title="刷新频率调优"></a>刷新频率调优</h3><p>大批量插入时，修改refresh_interval到-1（不刷新）或大于1s的时间，减少shard刷新间隔 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -XPUT &apos;http://&lt;ip&gt;:9200/dw-search/_settings&apos; -d &apos;&#123; </span><br><span class="line">    &quot;index&quot; : &#123; </span><br><span class="line">        &quot;refresh_interval&quot; : &quot;-1&quot; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
+
+<p>插入完成后修改回默认值1s </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -XPUT &apos;http://10.1.*.*:9200/dw-search/_settings&apos; -d &apos;&#123; </span><br><span class="line">    &quot;index&quot; : &#123; </span><br><span class="line">        &quot;refresh_interval&quot; : &quot;1s&quot; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
+
+<p>另外下面的文章列出了很多有用的url<br><a href="http://blog.csdn.net/u014351782/article/details/51207650" target="_blank" rel="noopener">http://blog.csdn.net/u014351782/article/details/51207650</a><br>其中关闭index这个方法在一次故障处理中起了很大的作用，我们发现系统一直报’too many open files’，然后找到elasticsearch进程，发现确实打开了很多句柄，然后调用 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl http://localhost:9200/_nodes/process\?pretty</span><br></pre></td></tr></table></figure>
+
+<p>发现最大句柄数已经是65530 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;max_file_descriptors&quot; : 65530,</span><br></pre></td></tr></table></figure>
+
+<p>果然重启之后，句柄数很快还是飙到了65530，通过关闭index，句柄数得到了显著减少。</p>
+<p>本篇博客还参考下面的博客：<br><a href="http://www.wklken.me/posts/2015/05/23/elasticsearch-issues.html" target="_blank" rel="noopener">http://www.wklken.me/posts/2015/05/23/elasticsearch-issues.html</a></p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/mysql-python安装时EnvironmentError-mysql_config-not-found/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/mysql-python安装时EnvironmentError-mysql_config-not-found/" class="post-title-link" itemprop="url">mysql-python安装时EnvironmentError-mysql_config-not-found</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/database/" itemprop="url" rel="index"><span itemprop="name">database</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>转自：<a href="http://www.cnblogs.com/xiazh/archive/2012/12/12/2814289.html" target="_blank" rel="noopener">http://www.cnblogs.com/xiazh/archive/2012/12/12/2814289.html</a><br>在安装 mysql-python时，会出现：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sh: mysql_config: not found</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;setup.py&quot;, line 15, in &lt;module&gt;</span><br><span class="line">    metadata, options = get_config()</span><br><span class="line">  File &quot;/home/zhxia/apps/source/MySQL-python-1.2.3/setup_posix.py&quot;, line 43, in get_config</span><br><span class="line">    libs = mysql_config(&quot;libs_r&quot;)</span><br><span class="line">  File &quot;/home/zhxia/apps/source/MySQL-python-1.2.3/setup_posix.py&quot;, line 24, in mysql_config</span><br><span class="line">    raise EnvironmentError(&quot;%s not found&quot; % (mysql_config.path,))</span><br><span class="line">EnvironmentError: mysql_config not found</span><br></pre></td></tr></table></figure>
+
+<p>解决方法如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libmysqlclient-dev</span><br><span class="line">sudo updatedb</span><br><span class="line">locate mysql_config</span><br></pre></td></tr></table></figure>
+
+<p>mysql_config的位置为：/usr/bin/mysql_config<br>通常情况下这就ok了，反正我的系统是ubuntu16.04这样做之后就好了。  </p>
+<p>旧一点的系统据说还需要按下面的方式再处理下，仅供参考：<br>在mysql-python源码包下找到：setup_posix.py 文件，然后找到文件中的 mysql_config.path 将其值改为：/usr/bin/mysql_config,然后 sudo python setup.py install ,就ok</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/通过nsenter进入docker容器的例子脚本/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="如栈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/2018/01/18/通过nsenter进入docker容器的例子脚本/" class="post-title-link" itemprop="url">通过nsenter进入docker容器的例子脚本</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2018-01-18 00:00:00" itemprop="dateCreated datePublished" datetime="2018-01-18T00:00:00+08:00">2018-01-18</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-06 21:00:09" itemprop="dateModified" datetime="2019-11-06T21:00:09+08:00">2019-11-06</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/运维/" itemprop="url" rel="index"><span itemprop="name">运维</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>下面是一个通过nsenter进入docker容器的例子脚本：<br>文件名字：ns<br>使用方法：将文件放入系统PATH路径下，进入容器方式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ns &lt;container-name/container-id&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">if [ -e $(dirname &quot;$0&quot;)/nsenter ]; then</span><br><span class="line">NSENTER=$(dirname &quot;$0&quot;)/nsenter</span><br><span class="line">else</span><br><span class="line">NSENTER=nsenter</span><br><span class="line">fi</span><br><span class="line">if [ -z &quot;$1&quot; ]; then</span><br><span class="line">echo &quot;Usage: `basename &quot;$0&quot;` CONTAINER [COMMAND [ARG]...]&quot;</span><br><span class="line">echo &quot;&quot;</span><br><span class="line">echo &quot;Enters the Docker CONTAINER and executes the specified COMMAND.&quot;</span><br><span class="line">echo &quot;If COMMAND is not specified, runs an interactive shell in CONTAINER.&quot;</span><br><span class="line">else</span><br><span class="line">PID=$(docker inspect -f &quot;&#123;&#123;.State.Pid&#125;&#125;&quot; &quot;$1&quot;)</span><br><span class="line">if [ -z &quot;$PID&quot; ]; then</span><br><span class="line">exit 1</span><br><span class="line">fi</span><br><span class="line">shift</span><br><span class="line">OPTS=&quot;--target $PID --mount --uts --ipc --net --pid --&quot;</span><br><span class="line">if [ -z &quot;$1&quot; ]; then</span><br><span class="line">&quot;$NSENTER&quot; $OPTS su - root</span><br><span class="line">else</span><br><span class="line">&quot;$NSENTER&quot; $OPTS env --ignore-environment -- &quot;$@&quot;</span><br><span class="line">fi</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+  </div>
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name"></p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
