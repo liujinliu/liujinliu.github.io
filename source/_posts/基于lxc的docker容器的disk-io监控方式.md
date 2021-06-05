@@ -4,7 +4,7 @@ date: 2018-01-18
 categories: 运维
 ---
 以一台测试机上的容器d-mcl-30_struc_test-n-2为例，容器id为373200daed7b，通过```docker inspec```t可以看到如下信息： 
-![这里写图片描述](https://img-blog.csdn.net/20161110190828780)
+![20161110190828780.png](https://i.loli.net/2021/06/05/DXRsuwyMSJnm6fP.png)
 
 图中高亮出来的部分是我们从宿主机映射到容器内的一个路径，下面我们来看这个路径对应的设备
 ![这里写图片描述](https://img-blog.csdn.net/20161110190908546)
