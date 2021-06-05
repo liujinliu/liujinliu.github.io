@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>elasticsearch调优 | 如栈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="这部分是从同事的wiki上扒下来的，记在这里，作为以后使用的参考 分片和副本调优 更多分片使索引能传送到更多的服务器，意味着可以处理更多的文件，而不会降低性能   更多分片意味着获取特定文档所需的资源量会减少，因为相较于部署更少分片时，存储在单个分片中的文件数量会更少   更多分片意味着搜索索引时会面临更多问题，因为必须从更多分片中合并结果，使得查询的聚合阶段需要更多的资源 更多副本会增强集群系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch调优">
+<meta property="og:url" content="http://example.com/2018/01/18/elasticsearch%E8%B0%83%E4%BC%98/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:description" content="这部分是从同事的wiki上扒下来的，记在这里，作为以后使用的参考 分片和副本调优 更多分片使索引能传送到更多的服务器，意味着可以处理更多的文件，而不会降低性能   更多分片意味着获取特定文档所需的资源量会减少，因为相较于部署更少分片时，存储在单个分片中的文件数量会更少   更多分片意味着搜索索引时会面临更多问题，因为必须从更多分片中合并结果，使得查询的聚合阶段需要更多的资源 更多副本会增强集群系统">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T02:21:14.825Z">
+<meta property="article:author" content="liujinliu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="如栈" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">如栈</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-elasticsearch调优" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/18/elasticsearch%E8%B0%83%E4%BC%98/" class="article-date">
+  <time class="dt-published" datetime="2018-01-18T00:00:00.000Z" itemprop="datePublished">2018-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      elasticsearch调优
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这部分是从同事的wiki上扒下来的，记在这里，作为以后使用的参考</p>
+<h3 id="分片和副本调优"><a href="#分片和副本调优" class="headerlink" title="分片和副本调优"></a>分片和副本调优</h3><ol>
+<li>更多分片使索引能传送到更多的服务器，意味着可以处理更多的文件，而不会降低性能  </li>
+<li>更多分片意味着获取特定文档所需的资源量会减少，因为相较于部署更少分片时，存储在单个分片中的文件数量会更少  </li>
+<li>更多分片意味着搜索索引时会面临更多问题，因为必须从更多分片中合并结果，使得查询的聚合阶段需要更多的资源</li>
+<li>更多副本会增强集群系统的容错性，因为当原始分片不可用时，其副本将代替原始分片发挥作用，只拥有单个副本，集群可能在不丢失数据的情况下遗失分片。当拥有两个副本时，即时丢失了原始分片及其中一个副本，一切工作仍可以很好地继续下去。</li>
+<li>更多副本意味着查询吞吐量会增加，因为执行车讯可以使用分片或分片的任一副本</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>副本多：</p>
+<ol>
+<li>优点：查询速度快，容错性高</li>
+<li>缺点：插入速度变慢</li>
+</ol>
+<p>分片多：</p>
+<ol>
+<li>优点：插入速度快</li>
+<li>缺点：查询速度慢</li>
+</ol>
+<p>副本最好设置为2份提高容错性和查询速度，分片设置为节点数量的2倍提高插入速度，如果是大批量导入不做查询的话可取消副本</p>
+<h3 id="Merge-吞吐量调优"><a href="#Merge-吞吐量调优" class="headerlink" title="Merge 吞吐量调优"></a>Merge 吞吐量调优</h3><p>系统默认是20mb，实际系统性能可能会更好，可适当调整 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl  -XPUT &quot;http://&lt;ip&gt;:9200/_cluster/settings&quot; -d</span><br><span class="line">&#x27;&#123;</span><br><span class="line">    &quot;persistent&quot;:</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;indices.store.throttle.type&quot;: &quot;merge&quot;,</span><br><span class="line">        &quot;indices.store.throttle.max_bytes_per_sec&quot;: &quot;200mb&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="刷新频率调优"><a href="#刷新频率调优" class="headerlink" title="刷新频率调优"></a>刷新频率调优</h3><p>大批量插入时，修改refresh_interval到-1（不刷新）或大于1s的时间，减少shard刷新间隔 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT &#x27;http://&lt;ip&gt;:9200/dw-search/_settings&#x27; -d &#x27;&#123; </span><br><span class="line">    &quot;index&quot; : &#123; </span><br><span class="line">        &quot;refresh_interval&quot; : &quot;-1&quot; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>插入完成后修改回默认值1s </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -XPUT &#x27;http://10.1.*.*:9200/dw-search/_settings&#x27; -d &#x27;&#123; </span><br><span class="line">    &quot;index&quot; : &#123; </span><br><span class="line">        &quot;refresh_interval&quot; : &quot;1s&quot; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;&#x27;</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>另外下面的文章列出了很多有用的url<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/u014351782/article/details/51207650">http://blog.csdn.net/u014351782/article/details/51207650</a><br>其中关闭index这个方法在一次故障处理中起了很大的作用，我们发现系统一直报’too many open files’，然后找到elasticsearch进程，发现确实打开了很多句柄，然后调用 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:9200/_nodes/process\?pretty</span><br></pre></td></tr></table></figure>
+
+<p>发现最大句柄数已经是65530 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;max_file_descriptors&quot; : 65530,</span><br></pre></td></tr></table></figure>
+<p>果然重启之后，句柄数很快还是飙到了65530，通过关闭index，句柄数得到了显著减少。</p>
+<p>本篇博客还参考下面的博客：<br><a target="_blank" rel="noopener" href="http://www.wklken.me/posts/2015/05/23/elasticsearch-issues.html">http://www.wklken.me/posts/2015/05/23/elasticsearch-issues.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/18/elasticsearch%E8%B0%83%E4%BC%98/" data-id="ckpj4r54100059snceookc7k3" data-title="elasticsearch调优" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/18/elasticsearch%E4%B8%ADmulti_match%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E5%9D%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          elasticsearch中multi_match的一个小坑
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/18/jq%E5%B7%A5%E5%85%B7%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">jq工具的简单使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/16/shell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">shell常用命令记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/23/mysql%E6%8F%92%E5%85%A5%E5%A4%AA%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4MySQL-server-has-gone-away/">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">ubuntu安装jdk7-jdk8的两种方式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">本地DynamoDB的启动方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/">curl命令发送post表单提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 liujinliu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

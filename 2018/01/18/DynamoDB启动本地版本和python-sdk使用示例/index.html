@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>本地DynamoDB的启动方法 | 如栈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="从http:&#x2F;&#x2F;dynamodb-local.s3-website-us-west-2.amazonaws.com&#x2F;dynamodb_local_2016-05-17.tar.gz下载DynamoDB的按照包，本地jre环境的配置请自行配置 12345678910# tar zxf dynamodb_local_2016-05-17.tar.gz# mkdir data# java -Djava.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地DynamoDB的启动方法">
+<meta property="og:url" content="http://example.com/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:description" content="从http:&#x2F;&#x2F;dynamodb-local.s3-website-us-west-2.amazonaws.com&#x2F;dynamodb_local_2016-05-17.tar.gz下载DynamoDB的按照包，本地jre环境的配置请自行配置 12345678910# tar zxf dynamodb_local_2016-05-17.tar.gz# mkdir data# java -Djava.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T02:21:14.825Z">
+<meta property="article:author" content="liujinliu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="如栈" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">如栈</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-DynamoDB启动本地版本和python-sdk使用示例" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/" class="article-date">
+  <time class="dt-published" datetime="2018-01-18T00:00:00.000Z" itemprop="datePublished">2018-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      本地DynamoDB的启动方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>从<a target="_blank" rel="noopener" href="http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2016-05-17.tar.gz%E4%B8%8B%E8%BD%BDDynamoDB%E7%9A%84%E6%8C%89%E7%85%A7%E5%8C%85%EF%BC%8C%E6%9C%AC%E5%9C%B0jre%E7%8E%AF%E5%A2%83%E7%9A%84%E9%85%8D%E7%BD%AE%E8%AF%B7%E8%87%AA%E8%A1%8C%E9%85%8D%E7%BD%AE">http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2016-05-17.tar.gz下载DynamoDB的按照包，本地jre环境的配置请自行配置</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># tar zxf dynamodb_local_2016-05-17.tar.gz</span><br><span class="line"># mkdir data</span><br><span class="line"># java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -dbPath data</span><br><span class="line">Initializing DynamoDB Local with the following configuration:</span><br><span class="line">Port:	8000</span><br><span class="line">InMemory:	false</span><br><span class="line">DbPath:	data</span><br><span class="line">SharedDb:	true</span><br><span class="line">shouldDelayTransientStatuses:	false</span><br><span class="line">CorsParams:	*</span><br></pre></td></tr></table></figure>
+<h3 id="Table-创建"><a href="#Table-创建" class="headerlink" title="Table 创建"></a>Table 创建</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding:utf-8 -*-</span><br><span class="line"></span><br><span class="line">import boto3</span><br><span class="line">from boto3.dynamodb.conditions import Key, Attr</span><br><span class="line"></span><br><span class="line">dynamodb = boto3.resource(&#x27;dynamodb&#x27;,</span><br><span class="line">                          endpoint_url=&#x27;http://localhost:8000&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def table_create():</span><br><span class="line">    table = dynamodb.create_table(</span><br><span class="line">        TableName=&#x27;users&#x27;,</span><br><span class="line">        KeySchema=[</span><br><span class="line">            &#123;</span><br><span class="line">                &#x27;AttributeName&#x27;: &#x27;username&#x27;,</span><br><span class="line">                &#x27;KeyType&#x27;: &#x27;HASH&#x27;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                &#x27;AttributeName&#x27;: &#x27;last_name&#x27;,</span><br><span class="line">                &#x27;KeyType&#x27;: &#x27;RANGE&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        AttributeDefinitions=[</span><br><span class="line">            &#123;</span><br><span class="line">                &#x27;AttributeName&#x27;: &#x27;username&#x27;,</span><br><span class="line">                &#x27;AttributeType&#x27;: &#x27;S&#x27;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                &#x27;AttributeName&#x27;: &#x27;last_name&#x27;,</span><br><span class="line">                &#x27;AttributeType&#x27;: &#x27;S&#x27;</span><br><span class="line">            &#125;,</span><br><span class="line"></span><br><span class="line">        ],</span><br><span class="line">        ProvisionedThroughput=&#123;</span><br><span class="line">            &#x27;ReadCapacityUnits&#x27;: 5,</span><br><span class="line">            &#x27;WriteCapacityUnits&#x27;: 5</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    table.meta.client.get_waiter(&#x27;table_exists&#x27;).wait(TableName=&#x27;users&#x27;)</span><br></pre></td></tr></table></figure>
+<h3 id="获取Table"><a href="#获取Table" class="headerlink" title="获取Table"></a>获取Table</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def table_get():</span><br><span class="line">    return dynamodb.Table(&#x27;users&#x27;)</span><br></pre></td></tr></table></figure>
+<h3 id="写入item"><a href="#写入item" class="headerlink" title="写入item"></a>写入item</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def item_put():</span><br><span class="line">    table = table_get()</span><br><span class="line">    table.put_item(</span><br><span class="line">        Item=&#123;</span><br><span class="line">                &#x27;username&#x27;: &#x27;liujinliu&#x27;,</span><br><span class="line">                &#x27;first_name&#x27;: &#x27;Jinliu&#x27;,</span><br><span class="line">                &#x27;last_name&#x27;: &#x27;liu&#x27;,</span><br><span class="line">                &#x27;age&#x27;: 30,</span><br><span class="line">                &#x27;account_type&#x27;: &#x27;standard_user&#x27;,</span><br><span class="line">            &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h3 id="获取item"><a href="#获取item" class="headerlink" title="获取item"></a>获取item</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def item_get():</span><br><span class="line">    table = table_get()</span><br><span class="line">    response = table.get_item(</span><br><span class="line">        Key=&#123;</span><br><span class="line">            &#x27;username&#x27;: &#x27;liujinliu&#x27;,</span><br><span class="line">            &#x27;last_name&#x27;: &#x27;liu&#x27;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    item = response[&#x27;Item&#x27;]</span><br><span class="line">    return item</span><br></pre></td></tr></table></figure>
+<h3 id="update-item"><a href="#update-item" class="headerlink" title="update item"></a>update item</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def item_update():</span><br><span class="line">    table = table_get()</span><br><span class="line">    table.update_item(</span><br><span class="line">        Key=&#123;</span><br><span class="line">            &#x27;username&#x27;: &#x27;liujinliu&#x27;,</span><br><span class="line">            &#x27;last_name&#x27;: &#x27;liu&#x27;</span><br><span class="line">        &#125;,</span><br><span class="line">        UpdateExpression=&#x27;SET age = :val1&#x27;,</span><br><span class="line">        ExpressionAttributeValues=&#123;</span><br><span class="line">            &#x27;:val1&#x27;: 26</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h3 id="删除item"><a href="#删除item" class="headerlink" title="删除item"></a>删除item</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def item_delete():</span><br><span class="line">    table = table_get()</span><br><span class="line">    table.delete_item(</span><br><span class="line">        Key=&#123;</span><br><span class="line">            &#x27;username&#x27;: &#x27;liujinliu&#x27;,</span><br><span class="line">            &#x27;last_name&#x27;: &#x27;liu&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<h3 id="获取表内item数量"><a href="#获取表内item数量" class="headerlink" title="获取表内item数量"></a>获取表内item数量</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def table_size():</span><br><span class="line">    table = table_get()</span><br><span class="line">    return table.item_count</span><br></pre></td></tr></table></figure>
+<h3 id="批量更新-插入item"><a href="#批量更新-插入item" class="headerlink" title="批量更新/插入item"></a>批量更新/插入item</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">items = [</span><br><span class="line">    &#123;</span><br><span class="line">        &#x27;username&#x27;: &#x27;liujinliu&#x27;,</span><br><span class="line">        &#x27;last_name&#x27;: &#x27;liu&#x27;,</span><br><span class="line">        &#x27;first_name&#x27;: &#x27;jinliu&#x27;,</span><br><span class="line">        &#x27;age&#x27;: 25,</span><br><span class="line">        &#x27;address&#x27;: &#123;</span><br><span class="line">            &#x27;road&#x27;: &#x27;1 Jefferson Street&#x27;,</span><br><span class="line">            &#x27;city&#x27;: &#x27;LA&#x27;,</span><br><span class="line">            &#x27;state&#x27;: &#x27;CA&#x27;,</span><br><span class="line">            &#x27;zipcode&#x27;: &#x27;90001&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &#x27;username&#x27;: &#x27;wangyiyang&#x27;,</span><br><span class="line">        &#x27;last_name&#x27;: &#x27;wang&#x27;,</span><br><span class="line">        &#x27;first_name&#x27;: &#x27;yiyang&#x27;,</span><br><span class="line">        &#x27;age&#x27;: 26,</span><br><span class="line">        &#x27;address&#x27;: &#123;</span><br><span class="line">            &#x27;road&#x27;: &#x27;huilongguan&#x27;,</span><br><span class="line">            &#x27;city&#x27;: &#x27;Beijing&#x27;,</span><br><span class="line">            &#x27;state&#x27;: &#x27;CHINA&#x27;,</span><br><span class="line">            &#x27;zipcode&#x27;: &#x27;082&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &#x27;username&#x27;: &#x27;chenwenquan&#x27;,</span><br><span class="line">        &#x27;last_name&#x27;: &#x27;chen&#x27;,</span><br><span class="line">        &#x27;first_name&#x27;: &#x27;wenquan&#x27;,</span><br><span class="line">        &#x27;age&#x27;: 27,</span><br><span class="line">        &#x27;address&#x27;: &#123;</span><br><span class="line">            &#x27;road&#x27;: &#x27;jintailu&#x27;,</span><br><span class="line">            &#x27;city&#x27;: &#x27;henan&#x27;,</span><br><span class="line">            &#x27;state&#x27;: &#x27;JP&#x27;,</span><br><span class="line">            &#x27;zipcode&#x27;: &#x27;222&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        &#x27;username&#x27;: &#x27;dengliangju&#x27;,</span><br><span class="line">        &#x27;last_name&#x27;: &#x27;deng&#x27;,</span><br><span class="line">        &#x27;first_name&#x27;: &#x27;liangju&#x27;,</span><br><span class="line">        &#x27;age&#x27;: 28,</span><br><span class="line">        &#x27;address&#x27;: &#123;</span><br><span class="line">            &#x27;road&#x27;: &#x27;qingnianlu&#x27;,</span><br><span class="line">            &#x27;city&#x27;: &#x27;chengdu&#x27;,</span><br><span class="line">            &#x27;state&#x27;: &#x27;India&#x27;,</span><br><span class="line">            &#x27;zipcode&#x27;: &#x27;333&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def batch_write():</span><br><span class="line">    table = table_get()</span><br><span class="line">    with table.batch_writer(overwrite_by_pkeys=[&#x27;username&#x27;,</span><br><span class="line">                                                &#x27;last_name&#x27;]) as batch:</span><br><span class="line">        for item in items:</span><br><span class="line">            batch.put_item(Item=item)</span><br></pre></td></tr></table></figure>
+<h3 id="query-scan"><a href="#query-scan" class="headerlink" title="query, scan"></a>query, scan</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">def query():</span><br><span class="line">    table = table_get()</span><br><span class="line">    response = table.query(</span><br><span class="line">        KeyConditionExpression=Key(&#x27;username&#x27;).eq(&#x27;wangyiyang&#x27;)</span><br><span class="line">    )</span><br><span class="line">    items = response[&#x27;Items&#x27;]</span><br><span class="line">    return items</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def scan():</span><br><span class="line">    table = table_get()</span><br><span class="line">    response = table.scan(</span><br><span class="line">        FilterExpression=Attr(&#x27;age&#x27;).lt(28)</span><br><span class="line">    )</span><br><span class="line">    items = response[&#x27;Items&#x27;]</span><br><span class="line">    return items</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def scan_1():</span><br><span class="line">    table = table_get()</span><br><span class="line">    response = table.scan(</span><br><span class="line">        FilterExpression=Attr(&#x27;age&#x27;).lt(28) &amp; Attr(</span><br><span class="line">            &#x27;address.city&#x27;).begins_with(&#x27;B&#x27;)</span><br><span class="line">    )</span><br><span class="line">    items = response.get(&#x27;Items&#x27;, [])</span><br><span class="line">    return items</span><br></pre></td></tr></table></figure>
+<h3 id="删除Table"><a href="#删除Table" class="headerlink" title="删除Table"></a>删除Table</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def table_delete():</span><br><span class="line">    table = table_get()</span><br><span class="line">    table.delete()</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    table_create()</span><br><span class="line">    # item_put()</span><br><span class="line">    # print(item_get())</span><br><span class="line">    # item_update()</span><br><span class="line">    # print(item_get())</span><br><span class="line">    # print(table_size())</span><br><span class="line">    # item_delete()</span><br><span class="line">    print(table_size())</span><br><span class="line">    batch_write()</span><br><span class="line">    print(table_size())</span><br><span class="line">    # print(item_get())</span><br><span class="line">    print(query())</span><br><span class="line">    print(scan())</span><br><span class="line">    print(scan_1())</span><br><span class="line">    # table_delete()</span><br><span class="line">    # print(query())</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/" data-id="ckpj4r53w00019sncc6isewee" data-title="本地DynamoDB的启动方法" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          ubuntu安装jdk7-jdk8的两种方式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">curl命令发送post表单提交</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/16/shell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">shell常用命令记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/23/mysql%E6%8F%92%E5%85%A5%E5%A4%AA%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4MySQL-server-has-gone-away/">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">ubuntu安装jdk7-jdk8的两种方式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">本地DynamoDB的启动方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/">curl命令发送post表单提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 liujinliu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

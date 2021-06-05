@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>记一次inodes占用过多问题的解决 | 如栈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="最近收到某台服务器告警，inodes使用过高，解决过程如下首先在服务器上执行下面的命令查看哪个目录下inodes使用过高 1234567891011121314[root@vm]# df -iFilesystem              Inodes  IUsed     IFree IUse% Mounted on&#x2F;dev&#x2F;mapper&#x2F;VGSYS-lv_root">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次inodes占用过多问题的解决">
+<meta property="og:url" content="http://example.com/2018/01/18/%E4%B8%80%E6%AC%A1inodes%E5%8D%A0%E7%94%A8%E8%BF%87%E5%A4%9A%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:description" content="最近收到某台服务器告警，inodes使用过高，解决过程如下首先在服务器上执行下面的命令查看哪个目录下inodes使用过高 1234567891011121314[root@vm]# df -iFilesystem              Inodes  IUsed     IFree IUse% Mounted on&#x2F;dev&#x2F;mapper&#x2F;VGSYS-lv_root">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T02:21:14.825Z">
+<meta property="article:author" content="liujinliu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="如栈" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">如栈</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-一次inodes占用过多问题的解决" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/18/%E4%B8%80%E6%AC%A1inodes%E5%8D%A0%E7%94%A8%E8%BF%87%E5%A4%9A%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time class="dt-published" datetime="2018-01-18T00:00:00.000Z" itemprop="datePublished">2018-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      记一次inodes占用过多问题的解决
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近收到某台服务器告警，inodes使用过高，解决过程如下<br>首先在服务器上执行下面的命令查看哪个目录下inodes使用过高</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@vm]# df -i</span><br><span class="line">Filesystem              Inodes  IUsed     IFree IUse% Mounted on</span><br><span class="line">/dev/mapper/VGSYS-lv_root</span><br><span class="line">                        655360 101872    553488   16% /</span><br><span class="line">tmpfs                  2041469      1   2041468    1% /dev/shm</span><br><span class="line">/dev/vda1                51200     38     51162    1% /boot</span><br><span class="line">/dev/mapper/VGSYS-lv_var</span><br><span class="line">                        655360 569533     85827   87% /var</span><br><span class="line">/dev/mapper/VGSYS-lv_srv</span><br><span class="line">                     104644608   1727 104642881    1% /srv</span><br><span class="line">/dev/mapper/VGSYS-lv_vfs</span><br><span class="line">                      52428800      7  52428793    1% /srv/docker/vfs</span><br><span class="line">/dev/mapper/VGSYS-lv_log</span><br><span class="line">                      31457280    207  31457073    1% /var/log</span><br></pre></td></tr></table></figure>
+<p>可以发现/var目录下inodes使用最大，使用下面的脚本进一步查找</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@vm]# for i in /var/*; do echo $i; find $i | wc -l; done</span><br><span class="line">/var/account</span><br><span class="line">2</span><br><span class="line">/var/cache</span><br><span class="line">98</span><br><span class="line">......</span><br><span class="line">/var/spool</span><br><span class="line">587003</span><br><span class="line">/var/tmp</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>通过这个方法，最终发现是”/var/spool/postfix/maildrop”目录下小文件过多。<br>通过上网搜索，原因如下： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">是由于linux在执行cron时，会将cron执行脚本中的output和warning信息，都会以邮件的形式发送Cron所有者，  </span><br><span class="line">而由于客户环境中的sendmail和postfix没有正常运行，导致邮件发送不成功，全部小文件堆积在了maildrop目录 </span><br><span class="line">下面，而且没有自动清理转换的机制，所以此目录堆积了大量的文件</span><br></pre></td></tr></table></figure>
+<p>进入”/var/spool/postfix/maildrop”路径，使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls | xargs -n 10 rm -rf </span><br></pre></td></tr></table></figure>
+<p>将文件清楚，问题得以恢复。</p>
+<h3 id="根本解决方法"><a href="#根本解决方法" class="headerlink" title="根本解决方法"></a>根本解决方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/crontab</span><br><span class="line">将MAILTO=root替换MAILTO=&quot;&quot;，然后service crond restart即可。如不行crontab -e 第一行增加MAILTO=&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/18/%E4%B8%80%E6%AC%A1inodes%E5%8D%A0%E7%94%A8%E8%BF%87%E5%A4%9A%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/" data-id="ckpj4r54f000s9snchdcq4jup" data-title="记一次inodes占用过多问题的解决" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/18/rabbitmq%E7%9A%84%E7%AE%80%E5%8D%95%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          rabbitmq的简单管理命令笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/18/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%88%B6%E9%80%A0cpu%E5%8E%8B%E5%8A%9B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">命令行制造cpu压力</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/16/shell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">shell常用命令记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/23/mysql%E6%8F%92%E5%85%A5%E5%A4%AA%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4MySQL-server-has-gone-away/">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">ubuntu安装jdk7-jdk8的两种方式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">本地DynamoDB的启动方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/">curl命令发送post表单提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 liujinliu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

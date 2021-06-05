@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>如栈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="如栈">
+<meta property="og:url" content="http://example.com/page/3/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:locale">
+<meta property="article:author" content="liujinliu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="如栈" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">如栈</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Cassandra集群搭建(包含监控)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/05/18/Cassandra%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(%E5%8C%85%E5%90%AB%E7%9B%91%E6%8E%A7)/" class="article-date">
+  <time class="dt-published" datetime="2017-05-18T00:00:00.000Z" itemprop="datePublished">2017-05-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/05/18/Cassandra%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(%E5%8C%85%E5%90%AB%E7%9B%91%E6%8E%A7)/">Cassandra集群搭建(包含监控)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="http://cassandra.apache.org/">cassandra</a>是当下流行的nosql数据库，基于google big table的理论。<br>这篇文章主要是记录自己搭建cassandra集群的过程，更重要的是监控系统的搭建过程，对这种基础设施来说，没有监控就是裸奔，裸奔就相当与<em>定时炸弹</em>。</p>
+<h3 id="1-集群搭建："><a href="#1-集群搭建：" class="headerlink" title="1. 集群搭建："></a>1. 集群搭建：</h3><p>system-info: ubuntu16.04<br>这里采用debian二进制包的方式安装，这一步也可以采用源码。<br>在这之前，需要安装好java8的环境，可以参考我另外一篇博客<a target="_blank" rel="noopener" href="http://blog.csdn.net/github_25679381/article/details/68063780">ubuntu安装jdk7/jdk8的两种方式</a><br>环境安装好之后，执行下面的命令进行安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb http://www.apache.org/dist/cassandra/debian 310x main&quot; | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list</span><br></pre></td></tr></table></figure>
+<p>这里的310x可以自行选择，我安装时候官网给的例子是36x<br>依次执行的下面的命令进行按照</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install cassandra</span><br></pre></td></tr></table></figure>
+<p>官网同时提到了在执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p>时候<a target="_blank" rel="noopener" href="http://cassandra.apache.org/doc/latest/getting_started/installing.html">报错的处理办法</a>，我当时没遇到什么报错。<br>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nodetool status</span><br></pre></td></tr></table></figure>
+<p>可以查看的节点的启动状态<br>节点的启动/停止/重启命令是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service cassandra start/stop/restart</span><br></pre></td></tr></table></figure>
+
+<p>###2.  集群配置<br>参考上面的步骤初始化两个机器(192.168.1.100,   192.168.1.101)。<br>分别配置/etc/cassandra/cassandra.yaml进行集群组建。主要涉及下面的几个配置。  </p>
+<p>192.168.1.100:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">seeds: 192.168.1.100</span><br><span class="line">listen_address: 192.168.1.100</span><br><span class="line">rpc_address： 192.168.1.100</span><br></pre></td></tr></table></figure>
+
+<p>192.168.1.101:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">seeds: 192.168.1.100</span><br><span class="line">listen_address: 192.168.1.101</span><br><span class="line">rpc_address： 192.168.1.101</span><br></pre></td></tr></table></figure>
+<p>配置完之后重启两台机器，集群就配置完成了。</p>
+<h3 id="3-监控搭建"><a href="#3-监控搭建" class="headerlink" title="3.监控搭建"></a>3.监控搭建</h3><p>下面介绍下集群监控系统的搭建，参考了国外的一篇<a target="_blank" rel="noopener" href="https://www.pythian.com/blog/monitoring-apache-cassandra-metrics-graphite-grafana/?utm_source=tuicool&utm_medium=referral">文章</a>，小伙伴也可以直接去看<br>监控系统由Graphite和Grafana组成，采用cassandra主动上报状态数据给Graphite，然后Graphite作为Grafana的数据源。因为Grafana的展现给漂亮。</p>
+<h4 id="1-配置cassandra向graphite上报状态统计"><a href="#1-配置cassandra向graphite上报状态统计" class="headerlink" title="1) 配置cassandra向graphite上报状态统计"></a>1) 配置cassandra向graphite上报状态统计</h4><ol>
+<li> 下载<a target="_blank" rel="noopener" href="http://search.maven.org/#artifactdetails|com.yammer.metrics|metrics-graphite|3.1.0|jar">metrics-graphite-3.1.0.jar</a>，这需要与你使用的cassandra版本一致。</li>
+<li>  jar包放入/usr/share/cassandra/lib/</li>
+<li> 在 /etc/cassandra/目录下创建一个上报状态的配置文件metrics_reporter_graphite.yaml，文件名可以自己随意指定</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">graphite:</span><br><span class="line">  -</span><br><span class="line">    period: 30</span><br><span class="line">    timeunit: &#x27;SECONDS&#x27;</span><br><span class="line">    prefix: &#x27;cassandra-TestCluster-192.168.1.227&#x27;</span><br><span class="line">    hosts:</span><br><span class="line">     - host: &#x27;localhost&#x27;</span><br><span class="line">       port: 2003</span><br><span class="line">    predicate:</span><br><span class="line">      color: &#x27;white&#x27;</span><br><span class="line">      useQualifiedName: true</span><br><span class="line">      patterns:</span><br><span class="line">        - &#x27;^org.apache.cassandra.+&#x27;</span><br><span class="line">        - &#x27;^jvm.+&#x27;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>将下面的内容加入cassandra-env.sh</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">METRICS_REPORTER_CFG=&quot;metrics_reporter_graphite.yaml&quot;</span><br><span class="line">JVM_OPTS=&quot;$JVM_OPTS -Dcassandra.metricsReporterConfigFile=$METRICS_REPORTER_CFG&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="2-安装配置Graphite"><a href="#2-安装配置Graphite" class="headerlink" title="2) 安装配置Graphite"></a>2) 安装配置Graphite</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">## Install Graphite-carbon and Graphite-web</span><br><span class="line">sudo apt-get install graphite-web graphite-carbon</span><br><span class="line"> </span><br><span class="line">## Configure Graphite</span><br><span class="line">sudo vi /etc/graphite/local_settings.py</span><br><span class="line">   TIME_ZONE = &#x27;Asia/Shanghai&#x27;</span><br><span class="line"> </span><br><span class="line">## Sync Graphite database</span><br><span class="line">sudo graphite-manage syncdb</span><br><span class="line"></span><br><span class="line">## Configure Carbon</span><br><span class="line">sudo vi /etc/default/graphite-carbon</span><br><span class="line">#-- CARBON_CACHE_ENABLED=true</span><br><span class="line"> </span><br><span class="line">sudo vi /etc/carbon/carbon.conf</span><br><span class="line">#-- ENABLE_LOGROTATION = True</span><br><span class="line"> </span><br><span class="line">## Configure Carbon storage schema</span><br><span class="line">sudo vi /etc/carbon/storage-schemas.conf</span><br><span class="line">#-- Add a section called &quot;cassandra&quot; before the last default section &quot;default_1min_for_1day&quot;</span><br><span class="line">    [cassandra]</span><br><span class="line">        pattern = ^cassandra\.</span><br><span class="line">        retentions = 10s:10m,1m:1h,10m:1d</span><br><span class="line"> </span><br><span class="line">## Configure metrics storage aggregation method</span><br><span class="line">sudo cp /usr/share/doc/graphite-carbon/examples/storage-aggregation.conf.example /etc/carbon/storage-aggregation.conf</span><br><span class="line">#-- Make any changes if needed</span><br><span class="line"> </span><br><span class="line">## Start carbon-cache service</span><br><span class="line">sudo service carbon-cache start</span><br></pre></td></tr></table></figure>
+<p>上面的配置几乎全copy自参考的那篇博客，除了这里没有使用postgresql，而是使用django默认的数据库(sqlite)</p>
+<h4 id="3-安装配置Grafana"><a href="#3-安装配置Grafana" class="headerlink" title="3) 安装配置Grafana"></a>3) 安装配置Grafana</h4><p>grafana这里使用postgresql数据库，首先安装postgresql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">## Install Postgres SQL database server</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install postgresql libpq-dev python-psycopg2</span><br><span class="line">sudo -u postgres psql</span><br><span class="line">CREATE USER cassmon WITH PASSWORD &#x27;some_password&#x27;;</span><br><span class="line">CREATE DATABASE grafana WITH OWNER cassmon;</span><br></pre></td></tr></table></figure>
+<p>安装配置grafana</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">## Install Grafana</span><br><span class="line">sudo apt-get install grafana</span><br><span class="line"> </span><br><span class="line">## Configure Grafana</span><br><span class="line">sudo vi /etc/grafana/grafana.ini</span><br><span class="line">#-- Make the following changes</span><br><span class="line">    [database]</span><br><span class="line">    type = postgres</span><br><span class="line">    host = 127.0.0.1:5432</span><br><span class="line">    name = grafana</span><br><span class="line">    user = cassmon</span><br><span class="line">    password = cassmon</span><br><span class="line"></span><br><span class="line">    [security]</span><br><span class="line">    admin_user = admin</span><br><span class="line">    admin_password = admin</span><br><span class="line">    secret_key = xxxxx@xxxxx.com</span><br><span class="line">sudo service grafana start</span><br></pre></td></tr></table></figure>
+<p>至此需要配的其实已经都配好了,  此时在8000端口就可以看到graphite的展示，然后在grafana里配置data source，就可以在grafana里看统计了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2017/05/18/Cassandra%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA(%E5%8C%85%E5%90%AB%E7%9B%91%E6%8E%A7)/" data-id="ckpj4r53s00009snccy3h14ct" data-title="Cassandra集群搭建(包含监控)" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; zurück</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/16/shell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">shell常用命令记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/23/mysql%E6%8F%92%E5%85%A5%E5%A4%AA%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4MySQL-server-has-gone-away/">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">ubuntu安装jdk7-jdk8的两种方式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">本地DynamoDB的启动方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/">curl命令发送post表单提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 liujinliu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

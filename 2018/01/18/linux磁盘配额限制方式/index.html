@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>linux磁盘配额限制方式 | 如栈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="最近研究docker的磁盘配额限制，貌似官方最新版本的docker已经支持，底层用的是linux的quota，于是自己对quota进行了简单的尝试，记录于此。本文将演示如何创建一个gquota的用户组，并对这个用户组下的用户进行磁盘配额限制。  查看内核是否支持123456# grep CONFIG_QUOTA &#x2F;boot&#x2F;config-[version]CONFIG_QUOTA&#x3D;yCONFIG_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux磁盘配额限制方式">
+<meta property="og:url" content="http://example.com/2018/01/18/linux%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9D%E9%99%90%E5%88%B6%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="如栈">
+<meta property="og:description" content="最近研究docker的磁盘配额限制，貌似官方最新版本的docker已经支持，底层用的是linux的quota，于是自己对quota进行了简单的尝试，记录于此。本文将演示如何创建一个gquota的用户组，并对这个用户组下的用户进行磁盘配额限制。  查看内核是否支持123456# grep CONFIG_QUOTA &#x2F;boot&#x2F;config-[version]CONFIG_QUOTA&#x3D;yCONFIG_">
+<meta property="og:locale">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027115636528">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027120951128">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027134117449">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027134601486">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027134956569">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027135032847">
+<meta property="og:image" content="http://ljlimg.aimag.top/blog/images/20161027140343586">
+<meta property="article:published_time" content="2018-01-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-05T02:21:14.825Z">
+<meta property="article:author" content="liujinliu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ljlimg.aimag.top/blog/images/20161027115636528">
+  
+    <link rel="alternate" href="/atom.xml" title="如栈" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">如栈</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-linux磁盘配额限制方式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/18/linux%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9D%E9%99%90%E5%88%B6%E6%96%B9%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2018-01-18T00:00:00.000Z" itemprop="datePublished">2018-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      linux磁盘配额限制方式
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近研究docker的磁盘配额限制，貌似官方最新版本的docker已经支持，底层用的是linux的quota，于是自己对quota进行了简单的尝试，记录于此。本文将演示如何创建一个gquota的用户组，并对这个用户组下的用户进行磁盘配额限制。 </p>
+<h4 id="查看内核是否支持"><a href="#查看内核是否支持" class="headerlink" title="查看内核是否支持"></a>查看内核是否支持</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># grep CONFIG_QUOTA /boot/config-[version]</span><br><span class="line">CONFIG_QUOTA=y</span><br><span class="line">CONFIG_QUOTA_NETLINK_INTERFACE=y</span><br><span class="line"># CONFIG_QUOTA_DEBUG is not set</span><br><span class="line">CONFIG_QUOTA_TREE=y</span><br><span class="line">CONFIG_QUOTACTL=y</span><br></pre></td></tr></table></figure>
+<p>CONFIG_QUOTA和CONFIG_QUOTACTL两个y，恭喜，你的内核支持quota，否则就要升级或是重新编译内核了，貌似2.4以上的版本内核都支持</p>
+<h4 id="修改内核fstab，对根目录开启磁盘配额限制"><a href="#修改内核fstab，对根目录开启磁盘配额限制" class="headerlink" title="修改内核fstab，对根目录开启磁盘配额限制"></a>修改内核fstab，对根目录开启磁盘配额限制</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/fstab</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027115636528" alt="这里写图片描述"><br>标出来的地方就是需要新增的地方，这个表示是对根目录进行磁盘配额限制，当然，也可以加在其他行，则是对其他的目录进行磁盘配额限制。</p>
+<h4 id="查看目录挂载位置"><a href="#查看目录挂载位置" class="headerlink" title="查看目录挂载位置"></a>查看目录挂载位置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/sda3        16G   11G  4.4G  71% /</span><br><span class="line">tmpfs           938M   72K  938M   1% /dev/shm</span><br><span class="line">/dev/sda1       190M   32M  148M  18% /boot</span><br></pre></td></tr></table></figure>
+<h4 id="重新挂载根目录分区，内核重新读取-etc-fstab文件"><a href="#重新挂载根目录分区，内核重新读取-etc-fstab文件" class="headerlink" title="重新挂载根目录分区，内核重新读取/etc/fstab文件"></a>重新挂载根目录分区，内核重新读取/etc/fstab文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mount -o remount /</span><br><span class="line"># mount | grep quota</span><br><span class="line">/dev/sda3 on / type ext4 (rw,usrquota,grpquota)</span><br></pre></td></tr></table></figure>
+<h4 id="通过quotacheck命令在根目录下生成quota配置文件"><a href="#通过quotacheck命令在根目录下生成quota配置文件" class="headerlink" title="通过quotacheck命令在根目录下生成quota配置文件"></a>通过quotacheck命令在根目录下生成quota配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># quotacheck -cugm /dev/sda3</span><br><span class="line"># ll / | grep quota</span><br><span class="line">-rw-------.   1 root root   8192 Oct 27 12:01 aquota.group</span><br><span class="line">-rw-------.   1 root root   7168 Oct 27 11:43 aquota.user</span><br></pre></td></tr></table></figure>
+<h4 id="启动磁盘配额"><a href="#启动磁盘配额" class="headerlink" title="启动磁盘配额"></a>启动磁盘配额</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># quotaon /dev/sda3</span><br></pre></td></tr></table></figure>
+<h4 id="创建一个用户组gquota，用来测试"><a href="#创建一个用户组gquota，用来测试" class="headerlink" title="创建一个用户组gquota，用来测试"></a>创建一个用户组gquota，用来测试</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># groupadd gquota</span><br></pre></td></tr></table></figure>
+<h4 id="配置对用户组gquota的磁盘配额限制"><a href="#配置对用户组gquota的磁盘配额限制" class="headerlink" title="配置对用户组gquota的磁盘配额限制"></a>配置对用户组gquota的磁盘配额限制</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># edquota -g gquota</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027120951128" alt="这里写图片描述"><br>设置用户组gquota的软限制为480M，硬限制为500M（用户超过软限制会得到报警，超不过硬限制）</p>
+<h4 id="新建用户并加入gquota用户组"><a href="#新建用户并加入gquota用户组" class="headerlink" title="新建用户并加入gquota用户组"></a>新建用户并加入gquota用户组</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># useradd -m temp</span><br><span class="line"># passwd temp</span><br><span class="line"># usermod -g gquota temp</span><br><span class="line"># su - temp</span><br></pre></td></tr></table></figure>
+<h4 id="模拟大文件写入"><a href="#模拟大文件写入" class="headerlink" title="模拟大文件写入"></a>模拟大文件写入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file1 bs=1M count=450</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134117449" alt="这里写图片描述"><br>大小没有超过软限制，没有告警<br>再次写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file3 bs=1M count=40</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134601486" alt="这里写图片描述"><br>此时已经出现告警<br>再次写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=/home/temp/file3 bs=1M count=40</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027134956569" alt="这里写图片描述"><br>显示写入失败</p>
+<h4 id="查看磁盘分配使用情况"><a href="#查看磁盘分配使用情况" class="headerlink" title="查看磁盘分配使用情况"></a>查看磁盘分配使用情况</h4><p><img src="http://ljlimg.aimag.top/blog/images/20161027135032847" alt="这里写图片描述"></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>需要说明的一点是，对组的限制指的是这个组下面的所有用户加起来使用的磁盘总额，假设有个temp2用户也加入了gquota这个组，那么如果temp用户已经写入了400M，那么留给temp2用户的软限制则只剩80M，磁盘配额限制是可以针对单个用户的，即执行下面的命令，依然以新建一个temp用户为例，temp用户不用加入gquota组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos66-3 ~]# useradd -m temp</span><br><span class="line">[root@centos66-3 ~]# passwd temp</span><br><span class="line">[root@centos66-3 ~]# edquota -u temp</span><br></pre></td></tr></table></figure>
+<p><img src="http://ljlimg.aimag.top/blog/images/20161027140343586" alt="这里写图片描述"><br>配置temp用户的磁盘配额软限制和硬限制依然可以采用上面的方式进行写入测试。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/01/18/linux%E7%A3%81%E7%9B%98%E9%85%8D%E9%A2%9D%E9%99%90%E5%88%B6%E6%96%B9%E5%BC%8F/" data-id="ckpj4r54300089sncb1yg6qz2" data-title="linux磁盘配额限制方式" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/18/jq%E5%B7%A5%E5%85%B7%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          jq工具的简单使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/18/mysql-python%E5%AE%89%E8%A3%85%E6%97%B6EnvironmentError-mysql_config-not-found/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">mysql-python安装时EnvironmentError-mysql_config-not-found</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B/">编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/16/shell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">shell常用命令记录</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/23/mysql%E6%8F%92%E5%85%A5%E5%A4%AA%E5%A4%9A%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4MySQL-server-has-gone-away/">mysql插入太多数据导致MySQL-server-has-gone-away</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/29/ubuntu%E5%AE%89%E8%A3%85jdk7-jdk8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/">ubuntu安装jdk7-jdk8的两种方式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/DynamoDB%E5%90%AF%E5%8A%A8%E6%9C%AC%E5%9C%B0%E7%89%88%E6%9C%AC%E5%92%8Cpython-sdk%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">本地DynamoDB的启动方法</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/18/curl%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81post%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4/">curl命令发送post表单提交</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 liujinliu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
