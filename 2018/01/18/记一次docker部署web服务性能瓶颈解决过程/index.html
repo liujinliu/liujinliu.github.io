@@ -14,7 +14,7 @@
 <meta property="og:description" content="在云计算领域，采用容器部署web服务越来越普遍，具有部署速度快，动态伸缩简单的特点。最近参与了一次公司采用docker容器技术部署web服务的一次实践，在压测过程遇到了一个性能问题，记录下来作为以后开发的一个积累。 问题描述测试环境单台物理机，24核，120G内存 部署场景采用docker容器，容器内部跑web应用。 压测过程并发500访问。1.启动一个容器，进行压测2.启动四个容器，进行压测">
 <meta property="og:locale">
 <meta property="article:published_time" content="2018-01-18T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-05T02:21:14.825Z">
+<meta property="article:modified_time" content="2021-06-05T02:29:34.457Z">
 <meta property="article:author" content="liujinliu">
 <meta name="twitter:card" content="summary">
   
@@ -110,7 +110,7 @@
 <p>果然发现有个别cpu一直处于忙碌当中(idel列一直为0)<br>于是开发怀疑是物理的RPS没开，后来设置RPS之后就好了。</p>
 <h3 id="关于RPS-RFS的一些理解"><a href="#关于RPS-RFS的一些理解" class="headerlink" title="关于RPS/RFS的一些理解"></a>关于RPS/RFS的一些理解</h3><p>参考<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/yy405145590/article/details/9837839">http://blog.csdn.net/yy405145590/article/details/9837839</a><br><a target="_blank" rel="noopener" href="http://www.linuxidc.com/Linux/2015-07/119424.htm">http://www.linuxidc.com/Linux/2015-07/119424.htm</a></p>
 <ul>
-<li>RPS全称是 Receive Packet Steering, 这是Google工程师 Tom Herbert (<a href="mailto:&#116;&#104;&#101;&#x72;&#98;&#101;&#x72;&#x74;&#x40;&#103;&#111;&#111;&#103;&#108;&#101;&#46;&#99;&#x6f;&#x6d;">&#116;&#104;&#101;&#x72;&#98;&#101;&#x72;&#x74;&#x40;&#103;&#111;&#111;&#103;&#108;&#101;&#46;&#99;&#x6f;&#x6d;</a> )提交的内核补丁, 在2.6.35进入Linux内核. 这个patch采用软件模拟的方式，实现了多队列网卡所提供的功能，分散了在多CPU系统上数据接收时的负载, 把软中断分到各个CPU处理，而不需要硬件支持，大大提高了网络性能。</li>
+<li>RPS全称是 Receive Packet Steering, 这是Google工程师 Tom Herbert (<a href="mailto:&#116;&#104;&#x65;&#114;&#98;&#101;&#x72;&#116;&#x40;&#x67;&#x6f;&#x6f;&#103;&#108;&#101;&#46;&#x63;&#x6f;&#109;">&#116;&#104;&#x65;&#114;&#98;&#101;&#x72;&#116;&#x40;&#x67;&#x6f;&#x6f;&#103;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a> )提交的内核补丁, 在2.6.35进入Linux内核. 这个patch采用软件模拟的方式，实现了多队列网卡所提供的功能，分散了在多CPU系统上数据接收时的负载, 把软中断分到各个CPU处理，而不需要硬件支持，大大提高了网络性能。</li>
 <li>RFS 全称是 Receive Flow Steering, 这也是Tom提交的内核补丁，它是用来配合RPS补丁使用的，是RPS补丁的扩展补丁，它把接收的数据包送达应用所在的CPU上，提高cache的命中率。</li>
 <li>这两个补丁往往都是一起设置，来达到最好的优化效果, 主要是针对单队列网卡多CPU环境(多队列多重中断的网卡也可以使用该补丁的功能，但多队列多重中断网卡有更好的选择:SMP IRQ affinity)</li>
 </ul>
@@ -125,7 +125,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2018/01/18/%E8%AE%B0%E4%B8%80%E6%AC%A1docker%E9%83%A8%E7%BD%B2web%E6%9C%8D%E5%8A%A1%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/" data-id="ckpj4r54j00109snc681tcwy1" data-title="记一次docker部署web服务性能瓶颈解决过程" class="article-share-link">Teilen</a>
+      <a data-url="http://example.com/2018/01/18/%E8%AE%B0%E4%B8%80%E6%AC%A1docker%E9%83%A8%E7%BD%B2web%E6%9C%8D%E5%8A%A1%E6%80%A7%E8%83%BD%E7%93%B6%E9%A2%88%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/" data-id="ckpj51snp00108infee2m252v" data-title="记一次docker部署web服务性能瓶颈解决过程" class="article-share-link">Teilen</a>
       
       
       
